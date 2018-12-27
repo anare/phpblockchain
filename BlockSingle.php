@@ -1,22 +1,55 @@
 <?php
 
+require_once __DIR__ . '/BlockInterface.php';
+
 /**
- * Class BlockSingle
+ * Class Block
  */
-class BlockSingle
+class BlockSingle implements BlockInterface
 {
     /**
      * @var int
      */
-    public $nonce;
+    protected $index;
 
     /**
-     * BlockSingle constructor.
+     * @var int
+     */
+    protected $timestamp;
+
+    /**
+     * @var string
+     */
+    protected $data;
+
+    /**
+     * @var ?string
+     */
+    protected $previousHash;
+
+    /**
+     * @var ?string
+     */
+    protected $nextHash;
+
+    /**
+     * @var string
+     */
+    protected $hash;
+
+    /**
+     * @var int
+     */
+    protected $nonce;
+
+    /**
+     * Block constructor.
      *
-     * @param      $index
-     * @param      $timestamp
-     * @param      $data
-     * @param null $previousHash
+     * @param int    $index
+     * @param int    $timestamp
+     * @param string $data
+     * @param ?string $previousHash
+     * @param ?string $nextHash
      */
     public function __construct($index, $timestamp, $data, $previousHash = null, $nextHash = null)
     {
@@ -38,5 +71,169 @@ class BlockSingle
             'sha256',
             $this->index . $this->previousHash . $this->timestamp . ((string)$this->data) . $this->nonce
         );
+    }
+
+    /**
+     * @return int
+     */
+    public function getIndex(): int
+    {
+        return $this->index;
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return BlockInterface|$this|self|static
+     */
+    public function setIndex(int $index)
+    {
+        $this->index = $index;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimestamp(): int
+    {
+        return $this->timestamp;
+    }
+
+    /**
+     * @param int $timestamp
+     *
+     * @return BlockInterface|$this|self|static
+     */
+    public function setTimestamp(int $timestamp)
+    {
+        $this->timestamp = $timestamp;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getData(): string
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param string $data
+     *
+     * @return BlockInterface|$this|self|static
+     */
+    public function setData(string $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPreviousHash()
+    {
+        return $this->previousHash;
+    }
+
+    /**
+     * @param mixed $previousHash
+     *
+     * @return BlockInterface|$this|self|static
+     */
+    public function setPreviousHash($previousHash)
+    {
+        $this->previousHash = $previousHash;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNextHash()
+    {
+        return $this->nextHash;
+    }
+
+    /**
+     * @param mixed $nextHash
+     *
+     * @return BlockInterface|$this|self|static
+     */
+    public function setNextHash($nextHash)
+    {
+        $this->nextHash = $nextHash;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHash(): string
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @param string $hash
+     *
+     * @return BlockInterface|$this|self|static
+     */
+    public function setHash(string $hash)
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNonce(): int
+    {
+        return $this->nonce;
+    }
+
+    /**
+     * @param int $nonce
+     *
+     * @return BlockInterface|$this|self|static
+     */
+    public function setNonce(int $nonce)
+    {
+        $this->nonce = $nonce;
+
+        return $this;
+    }
+
+    /**
+     * @param int $inc
+     *
+     * @return BlockInterface|$this|self|static
+     */
+    public function incNonce(int $inc = 1)
+    {
+        $this->nonce += $inc;
+
+        return $this;
+    }
+
+    public function toArray()
+    {
+        return [
+            'index'        => $this->index,
+            'timestamp'    => $this->timestamp,
+            'data'         => $this->data,
+            'previousHash' => $this->previousHash,
+            'hash'         => $this->hash,
+            'nonce'        => $this->nonce,
+        ];
     }
 }

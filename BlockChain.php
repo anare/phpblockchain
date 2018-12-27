@@ -41,7 +41,7 @@ class BlockChain
     public function push(BlockInterface $block)
     {
         $block->setPreviousHash($this->getLastBlock()->getHash());
-        $this->mine($block);
+        $this->mkSimple($block);
         $this->chain[] = $block;
 
         return $this;
@@ -59,7 +59,20 @@ class BlockChain
             $block->setHash($block->calculateHash());
         }
 
-        echo "Block mined: " . $block->getHash() . "\n";
+        echo 'Block mined: ' . $block->getHash() . "\n";
+    }
+
+    /**
+     * Mines a block.
+     *
+     * @param BlockInterface $block
+     */
+    public function mkSimple(BlockInterface $block)
+    {
+        $block->incNonce();
+        $block->setHash($block->calculateHash());
+
+        echo 'Block mined: ' . $block->getHash() . "\n";
     }
 
     /**
